@@ -1,3 +1,4 @@
+
 CREATE OR ALTER PROCEDURE slayer.load_silver AS 
 BEGIN 
     BEGIN TRY 
@@ -54,6 +55,11 @@ BEGIN
                 Customer_ID,
                 TRIM(Customer_Name) Customer_Name,
                 TRIM(Segment)       Segment,
+                TRIM(Country)      Country,
+                TRIM(City)         City,
+                TRIM(State)        State,
+                Postel_Code,
+                TRIM(Region)       Region,
                 ROW_NUMBER() OVER (PARTITION BY Customer_ID ORDER BY customer_id) AS rn
             FROM fLayer.customers
             WHERE Customer_ID IS NOT NULL
@@ -198,3 +204,4 @@ BEGIN
 	END CATCH
 
 END 
+exec sLayer.load_silver;
