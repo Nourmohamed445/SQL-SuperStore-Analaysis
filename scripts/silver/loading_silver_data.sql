@@ -100,42 +100,6 @@ BEGIN
     		PRINT 'Load Duration : ' + CAST(DATEDIFF(Second,@start_time,@end_time) AS NVARCHAR ) + ' Seconds' 
     		PRINT('_______________________________________________');
 
-        -- ============================
-        -- LOCATIONS TABLE
-
-        SET @start_time = GETDATE();
-		    PRINT('>> Truncate data from table : sLayer.locations ' );
-        IF OBJECT_ID('sLayer.locations', 'U') IS NOT NULL
-            TRUNCATE TABLE sLayer.locations;
-        
-		    PRINT('>> Insert data into table : sLayer.locations ' );
-        INSERT INTO sLayer.locations (Country, City, State, Postel_Code, Region)
-        SELECT 
-                Country,
-                City,
-                State,
-                Postel_Code,
-                Region
-        FROM (
-            SELECT 
-            TRIM(Country)      Country,
-            TRIM(City)         City,
-            TRIM(State)        State,
-            Postel_Code,
-            TRIM(Region)       Region,
-                ROW_NUMBER() OVER (
-                    PARTITION BY Country, City, State, Postel_Code, Region 
-                    ORDER BY Country
-                ) AS loc_rank
-            FROM fLayer.locations
-            WHERE Postel_Code IS NOT NULL
-        ) t
-        WHERE loc_rank = 1;
-
-        SET @end_time = GETDATE();
-    		PRINT 'Load Duration : ' + CAST(DATEDIFF(Second,@start_time,@end_time) AS NVARCHAR ) + ' Seconds' 
-    		PRINT('_______________________________________________');
-        
 
         -- ============================
         -- Clean & load SALES table from fLayer to sLayer
