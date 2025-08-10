@@ -45,20 +45,25 @@ BEGIN
 
         
         PRINT('>> Insert data into table : sLayer.customers ' ); 
-        INSERT INTO sLayer.customers (Customer_ID, Customer_Name, Segment)
+        INSERT INTO sLayer.customers (Customer_ID, Customer_Name, Segment,Country,City,State,Postel_Code,Region)
         SELECT 
                 Customer_ID,
                 Customer_Name,
-                Segment
+                Segment,
+                Country,
+                City,
+                State,
+                Postal_code,
+                Region
         FROM (
             SELECT 
                 Customer_ID,
                 TRIM(Customer_Name) Customer_Name,
                 TRIM(Segment)       Segment,
-                TRIM(Country)      Country,
-                TRIM(City)         City,
-                TRIM(State)        State,
-                Postel_Code,
+                TRIM(Country)       Country,
+                TRIM(City)          City,
+                TRIM(State)         State,
+                Postel_Code        Postal_code,
                 TRIM(Region)       Region,
                 ROW_NUMBER() OVER (PARTITION BY Customer_ID ORDER BY customer_id) AS rn
             FROM fLayer.customers
@@ -98,8 +103,7 @@ BEGIN
         
         SET @end_time = GETDATE();
     		PRINT 'Load Duration : ' + CAST(DATEDIFF(Second,@start_time,@end_time) AS NVARCHAR ) + ' Seconds' 
-    		PRINT('_______________________________________________');
-
+    		PRINT('_______________________________________________');        
 
         -- ============================
         -- Clean & load SALES table from fLayer to sLayer
