@@ -1,16 +1,3 @@
-/*
-You’ve split fLayer.superStore_raw into:
-
-- Dimension-like tables:
-  orders (OrderID, dates, ship mode)
-  customers (CustomerID, name, segment)
-  locations (Country, City, State, Postal Code, Region)
-  products (ProductID, Category, SubCategory, ProductName)
-
-- Fact-like table:
-  sales (OrderID, ProductID, CustomerID, Sales, Quantity, Discount, Profit)
-  That’s basically a bronze layer star schema — still raw values, but organized into separate entities.
-*/
 -- ========================================
 -- ORDER TABLE
 IF OBJECT_ID('flayer.orders','U') IS NOT NULL
@@ -34,17 +21,7 @@ GO
 CREATE TABLE flayer.customers (
     Customer_id     NVARCHAR(50),
     Customer_name   NVARCHAR(50),
-    Segment         NVARCHAR(50)
-);
-GO
-
--- ========================================
--- LOCATIONS TABLE
-IF OBJECT_ID('flayer.locations','U') IS NOT NULL
-    DROP TABLE flayer.locations;
-GO
-
-CREATE TABLE flayer.locations (
+    Segment         NVARCHAR(50),
     Country         NVARCHAR(50),
     City            NVARCHAR(50),
     State           NVARCHAR(50),
@@ -68,6 +45,7 @@ CREATE TABLE flayer.products (
 GO
 
 -- ========================================
+-- SALES TABLE
 -- SALES TABLE
 IF OBJECT_ID('flayer.sales', 'U') IS NOT NULL
     DROP TABLE flayer.sales;
