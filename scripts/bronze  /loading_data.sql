@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE slayer.load_bronze AS 
+CREATE OR ALTER PROCEDURE flayer.load_bronze AS 
 BEGIN 
     BEGIN TRY 
 		DECLARE @start_time DATETIME , @end_time DATETIME; -- Creating variables
@@ -134,3 +134,4 @@ BEGIN
 	END CATCH
 
 END 
+
