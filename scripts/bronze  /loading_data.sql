@@ -35,33 +35,15 @@ BEGIN
 	        TRUNCATE TABLE fLayer.customers;
 
 		PRINT('>> Insert data into table : fLayer.customers ' );
-        INSERT INTO flayer.customers (Customer_id, Customer_name, Segment)
+        INSERT INTO flayer.customers (Customer_id, Customer_name, Segment,Country, City, State, Postel_Code, Region)
         SELECT 
             Customer_ID,
             Customer_Name,
-            Segment
-        FROM flayer.superstore_raw;
-
-                        
-        SET @end_time = GETDATE();
-		    PRINT 'Load Duration : ' + CAST(DATEDIFF(Second,@start_time,@end_time) AS NVARCHAR ) + ' Seconds' 
-		    PRINT('_______________________________________________');
-
-        --=========================================
-        -- LOCAIONS TABLE 
-                                        
-        SET @start_time = GETDATE();
-		PRINT('>> Truncate data from table : fLayer.locations ' );
-        IF OBJECT_ID('fLayer.locations','U') IS NOT NULL 
-	        TRUNCATE TABLE fLayer.locations;
-
-		PRINT('>> Insert data into table : fLayer.locations ' );
-        INSERT INTO flayer.locations (Country, City, State, Postel_Code, Region)
-        SELECT 
+            Segment,
             Country,
             City,
             State,
-            TRY_CAST(Postal_Code AS INT),
+            TRY_CAST(Postal_Code AS nvarchar),
             Region
         FROM flayer.superstore_raw;
 
@@ -69,6 +51,7 @@ BEGIN
         SET @end_time = GETDATE();
 		    PRINT 'Load Duration : ' + CAST(DATEDIFF(Second,@start_time,@end_time) AS NVARCHAR ) + ' Seconds' 
 		    PRINT('_______________________________________________');
+
 
         --=========================================
         -- PRODUCTS TABLE
@@ -135,3 +118,4 @@ BEGIN
 
 END 
 
+EXEC fLayer.load_bronze
